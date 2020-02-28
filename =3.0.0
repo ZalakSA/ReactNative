@@ -1,0 +1,4 @@
++ lottie-react-native@3.3.2
+added 4 packages from 3 contributors and audited 71141 packages in 7.678s
+found 6 low severity vulnerabilities
+  run `npm audit fix` to fix them, or `npm audit` for details
