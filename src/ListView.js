@@ -29,23 +29,23 @@ export default class ListView extends Component {
         return ( 
             <View style={styles.redContainer}>
                 {/* <SafeAreaView>             */}
-            <FlatList
-              data={ this.state.recipeList }
-              renderItem={({item}) => 
-            // <TouchableOpacity activeOpacity={0.9} onPress={this.GetListItem.bind(this, item.name)}>
-            <View style={styles.container} >
-              <Image 
-               source={{ uri: item.photo == null ? '/Users/zalakpatel/Documents/Projects/React Native Sample/Demo/assets/image_placeholder.png' : item.photo }}
-               style={styles.imageStyle}  
-        />
-        <View  style = {styles.textContainer}>
-        <Text style={styles.cellTitle} > {item.name} </Text>
-        <Text style={styles.createdTitle} >created by : {item.firstName} {item.lastName} </Text>
-       </View>
-        </View>
-       }
-        keyExtractor={(item, index) => index}
-        style = {styles.recipeList}
+
+                <FlatList
+          data={this.state.receipeList}
+          extraData={this.state.receipeList}
+          renderItem={({ item }) => {
+            return    <View style={styles.container} >
+            <Image 
+             source={{ uri: item.photo == null ? '/Users/zalakpatel/Documents/Projects/React Native Sample/Demo/assets/image_placeholder.png' : item.photo }}
+             style={styles.imageStyle}  
+      />
+      <View  style = {styles.textContainer}>
+      <Text style={styles.cellTitle} > {item.name} </Text>
+      <Text style={styles.createdTitle} >created by : {item.firstName} {item.lastName} </Text>
+     </View>
+      </View>
+          }}
+          keyExtractor={(i, j) => j.toString()}
         />
         {/* </SafeAreaView> */}
        </View> 
@@ -55,34 +55,28 @@ export default class ListView extends Component {
 
 
     getRecepeList = () => {
-        console.log("API")
-        //    this.setState({ visible: true })
-        const { navigate } = this.props.navigation;
-        fetch('http://35.160.197.175:3006/api/v1/recipe/feeds',
-            {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.MGBf-reNrHdQuwQzRDDNPMo5oWv4GlZKlDShFAAe16s'
-                }
-            }).then((response) => {
-                this.setState({ visible: false })
-                return response.json()
-            }).then((responseJson) => {
-                this.setState({ visible: false })
-                if (responseJson.error == null) {
-                    this.setState({ recipeList: responseJson, visible: false })
-                    console.log(recipeList)
-                    // Alert.alert('Success', 'Login successfully')
-                } else {
-                    Alert.alert('Error', responseJson.error)
-                }
-            }).catch((error) => {
-                this.setState({ visible: false })
-                Alert.alert('Error', error)
-            })
-
-
-    }
+    fetch('http://35.160.197.175:3006/api/v1/recipe/feeds',
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.MGBf-reNrHdQuwQzRDDNPMo5oWv4GlZKlDShFAAe16s',
+          'Content-Type': 'application/json'
+        },
+      }).then((response) => {
+        return response.json()
+      }).then((responseJSON) => {
+        console.log(responseJSON);
+        this.setState({ receipeList: responseJSON })
+      }).catch((error) => {
+        console.log(error);
+        Alert.alert('React', "data", [
+          {
+            text: 'Ok',
+            style: 'cancel'
+          },
+        ])
+      })
+  }
 }
 
 const styles = StyleSheet.create(
